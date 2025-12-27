@@ -1,0 +1,42 @@
+{
+  "exam": "DOP-C02",
+  "topic": "Pipelines & Delivery",
+  "questions": [
+    {
+      "id": "dop-001",
+      "question": "You need one pipeline definition that promotes the same artifact through dev, staging, and prod with environment-specific approvals. What fits best?",
+      "options": [
+        "Three separate CodePipelines, one per stage",
+        "Single CodePipeline with multiple stages and manual approvals between stages",
+        "One CodeBuild project triggered by three CodeCommit branches",
+        "Use AWS Batch to orchestrate deployments"
+      ],
+      "correctIndex": 1,
+      "explanation": "A single multi-stage CodePipeline keeps the artifact consistent and allows manual approvals between environments."
+    },
+    {
+      "id": "dop-002",
+      "question": "You must roll out a Lambda change with minimal blast radius and automatic rollback on alarms. Which approach is strongest?",
+      "options": [
+        "Update alias directly with 100% traffic",
+        "Use CodeDeploy canary for Lambda with CloudWatch alarm rollback",
+        "Blue/green on EC2 behind an ALB",
+        "SNS notification and manual rollback"
+      ],
+      "correctIndex": 1,
+      "explanation": "CodeDeploy canary for Lambda shifts traffic gradually and rolls back automatically when the alarm fires."
+    },
+    {
+      "id": "dop-003",
+      "question": "A team needs fast feedback on unit tests and slower integration tests without delaying deploys. Best pattern?",
+      "options": [
+        "Run unit and integration tests in the same CodeBuild phase",
+        "Skip integration tests in CI and run them weekly",
+        "Parallel CodeBuild actions: quick unit test job gates merges; slower integration job reports separately",
+        "Run all tests locally only"
+      ],
+      "correctIndex": 2,
+      "explanation": "Splitting fast and slow tests into parallel CodeBuild actions keeps feedback quick while still surfacing integration results."
+    }
+  ]
+}

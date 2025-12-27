@@ -1,0 +1,186 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const sections = [
+  {
+    title: "Design Solutions for Organizational Complexity",
+    items: [
+      {
+        title: "Architect network connectivity strategies",
+        href: "/aws/sap-c02/architect-network-connectivity-strategies",
+        blurb: "Hybrid connectivity, routing strategies, and global edge patterns.",
+      },
+      {
+        title: "Prescribe security controls",
+        href: "/aws/sap-c02/prescribe-security-controls",
+        blurb: "Identity, encryption, and governance controls across accounts.",
+      },
+      {
+        title: "Design reliable and resilient architectures",
+        href: "/aws/sap-c02/design-reliable-and-resilient-architectures",
+        blurb: "High availability patterns, RTO/RPO tradeoffs, and failure isolation.",
+      },
+      {
+        title: "Design a multi-account AWS environment",
+        href: "/aws/sap-c02/design-multi-account-aws-environment",
+        blurb: "Organizations, guardrails, and account segmentation strategies.",
+      },
+      {
+        title: "Determine cost optimization and visibility strategies",
+        href: "/aws/sap-c02/determine-cost-optimization-visibility-strategies",
+        blurb: "Cost allocation, budgets, and visibility for large environments.",
+      },
+    ],
+  },
+  {
+    title: "Design for New Solutions",
+    items: [],
+    status: "Coming soon",
+  },
+];
+
+const recap = {
+  title: "Flashcards (Quick Recap)",
+  href: "/aws/sap-c02/flashcards",
+  blurb: "Rapid recall of core terms, tradeoffs, and architecture patterns.",
+  type: "Flashcards",
+};
+---
+
+<BaseLayout
+  title="SAP-C02 Decks | AWS Exam Prep"
+  description="Browse all SAP-C02 practice decks."
+  currentExam="sap-c02"
+>
+  <section class="surface hero">
+    <div class="eyebrow">SAP-C02</div>
+    <h1>Design Solutions for Organizational Complexity</h1>
+    <p class="lede">
+      These decks follow the official SAP-C02 domain breakdown for organizational complexity.
+    </p>
+  </section>
+
+  <section class="sections">
+    {sections.map((section) => (
+      <details class="section" open={section.items.length > 0}>
+        <summary>
+          <span>{section.title}</span>
+          {section.status && <span class="status">{section.status}</span>}
+        </summary>
+        {section.items.length > 0 ? (
+          <div class="grid">
+            {section.items.map((track) => (
+                <div class="card track">
+                  <div class="card-top">
+                    <span class="pill">SAP-C02</span>
+                    {track.type && <span class="badge">{track.type}</span>}
+                  </div>
+                <h2>{track.title}</h2>
+                <p class="muted">{track.blurb}</p>
+                <a class="go button" href={track.href}>Open deck →</a>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p class="muted empty-note">New sections coming soon.</p>
+        )}
+      </details>
+    ))}
+  </section>
+
+  <section class="grid">
+    <div class="card track">
+      <div class="card-top">
+        <span class="pill">SAP-C02</span>
+        <span class="badge">{recap.type}</span>
+      </div>
+      <h2>{recap.title}</h2>
+      <p class="muted">{recap.blurb}</p>
+      <a class="go button" href={recap.href}>Open deck →</a>
+    </div>
+  </section>
+
+  <style>
+    .sections {
+      display: grid;
+      gap: 14px;
+      margin: 18px 0;
+    }
+    .section {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 8px 12px;
+    }
+    summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 700;
+      padding: 10px 8px;
+    }
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    .status {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .empty-note {
+      padding: 4px 8px 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    h2 {
+      margin: 12px 0 6px;
+      letter-spacing: -0.01em;
+    }
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .go {
+      display: inline-block;
+      margin-top: 8px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .button {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: border 0.2s ease, background 0.2s ease, transform 0.1s ease;
+    }
+    .button:hover {
+      border-color: rgba(109, 236, 185, 0.8);
+      background: rgba(109, 236, 185, 0.08);
+      transform: translateY(-1px);
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const tracks = [
+  {
+    title: "Pipelines & Delivery",
+    blurb: "Multi-stage CodePipeline promos, Lambda canaries, and fast/slow test splits.",
+    href: "/aws/dop-c02/pipelines",
+    status: "Live",
+  },
+  {
+    title: "Observability",
+    blurb: "Alarms, traces, automated remediation (coming soon).",
+    href: "",
+    status: "Coming soon",
+  },
+];
+---
+
+<BaseLayout
+  title="DOP-C02 – DevOps Pro | AWS Exam Prep"
+  description="DevOps Pro decks: pipelines and observability."
+  currentExam="dop-c02"
+>
+  <section class="surface hero">
+    <div class="eyebrow">DOP-C02</div>
+    <h1>DevOps Engineer Professional decks</h1>
+    <p class="lede">
+      Pick a deck to drill delivery safety nets and operational guardrails. More sections land here as they’re ready.
+    </p>
+    <div class="meta">
+      <span class="chip">Exam: DOP-C02</span>
+      <span class="chip">Decks: Pipelines (live), Observability (soon)</span>
+    </div>
+  </section>
+
+  <section class="grid">
+    {tracks.map((track) => (
+      <div class="card track">
+        <div class="card-top">
+          <span class="pill">DOP-C02</span>
+          <span class="badge">{track.status}</span>
+        </div>
+        <h2>{track.title}</h2>
+        <p class="muted">{track.blurb}</p>
+        {track.status === "Coming soon"
+          ? <span class="go disabled">Coming soon</span>
+          : <a class="go" href={track.href}>Open deck →</a>}
+      </div>
+    ))}
+  </section>
+
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .go {
+      display: inline-block;
+      margin-top: 8px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .disabled {
+      color: var(--muted);
+    }
+  </style>
+</BaseLayout>

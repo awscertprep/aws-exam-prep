@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import updates from "../../content/updates.json";
+---
+
+<BaseLayout title="Changelog | AWS Exam Prep" description="All published updates and content drops.">
+  <section class="surface hero">
+    <div class="eyebrow">Changelog</div>
+    <h1>All updates</h1>
+    <p class="lede">Every new deck, flashcard drop, and service note—listed newest to oldest.</p>
+  </section>
+
+  <section class="surface updates-page">
+    <div class="updates-list">
+      {updates.map((item) => (
+        <div class="update">
+          <div class="update-date">{item.date}</div>
+          <div>
+            <div class="update-title">
+              {item.link && <a href={item.link}>{item.title}</a>}
+              {!item.link && <span>{item.title}</span>}
+            </div>
+            <div class="muted">{item.description}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <style>
+    .updates-page {
+      margin-top: 16px;
+    }
+    .updates-list {
+      display: grid;
+      gap: 14px;
+      max-height: 520px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.05);
+    }
+    .updates-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .updates-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+    }
+    .updates-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .update {
+      display: grid;
+      gap: 6px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .update-date {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .update-title {
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+  </style>
+</BaseLayout>

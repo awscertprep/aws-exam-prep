@@ -1,0 +1,421 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import updates from "../../content/updates.json";
+import sapNetwork from "../../content/aws/sap-c02/mcqs/architect-network-connectivity-strategies.json";
+import sapSecurity from "../../content/aws/sap-c02/mcqs/prescribe-security-controls.json";
+import sapResilience from "../../content/aws/sap-c02/mcqs/design-reliable-and-resilient-architectures.json";
+import sapMultiAccount from "../../content/aws/sap-c02/mcqs/design-multi-account-aws-environment.json";
+import sapCost from "../../content/aws/sap-c02/mcqs/determine-cost-optimization-visibility-strategies.json";
+import sapFlashcards from "../../content/aws/sap-c02/flashcards/overview.json";
+import dopPipelines from "../../content/aws/dop-c02/mcqs/pipelines.json";
+
+const tracks = [
+  {
+    title: "Solutions Architect Professional",
+    href: "/aws/sap-c02",
+    blurb: "SAP-C02 decks: high availability, networking, security.",
+    badge: "SAP-C02",
+  },
+  {
+    title: "DevOps Engineer Professional",
+    href: "/aws/dop-c02",
+    blurb: "DOP-C02 decks: pipelines live; observability coming soon.",
+    badge: "DOP-C02",
+  },
+];
+
+const stats = [
+  {
+    label: "SAP-C02 Questions",
+    value:
+      sapNetwork.questions.length +
+      sapSecurity.questions.length +
+      sapResilience.questions.length +
+      sapMultiAccount.questions.length +
+      sapCost.questions.length,
+  },
+  {
+    label: "DOP-C02 Questions",
+    value: dopPipelines.questions.length,
+  },
+  {
+    label: "Flashcards",
+    value: sapFlashcards.cards.length,
+  },
+  {
+    label: "Decks Live",
+    value: 5,
+  },
+];
+
+const recentUpdates = updates.slice(0, 5);
+---
+
+<BaseLayout
+  title="AWS Exam Prep"
+  description="Modern practice deck for AWS certification scenarios."
+  currentExam="sap-c02"
+  showBack={false}
+>
+  <div class="hero-layout">
+    <section class="surface hero">
+      <div class="eyebrow">AWS Exam Prep</div>
+      <h1>Scenario-first drills for AWS certifications</h1>
+      <p class="lede">
+        Move beyond memorization. Test yourself with focused MCQs, clean explanations, and a layout that
+        keeps you in flow.
+      </p>
+      <div class="cta-row">
+        <a class="primary" href="/aws/sap-c02">Browse SAP-C02 decks</a>
+        <a class="ghost" href="/aws/dop-c02">Browse DOP-C02 decks</a>
+      </div>
+    </section>
+
+    <aside class="surface updates">
+      <div class="updates-header">
+        <p class="eyebrow">Changelog</p>
+        <p class="muted">Recent decks and question additions.</p>
+      </div>
+      <div class="updates-list">
+        {recentUpdates.map((item) => (
+          <div class="update">
+            <div class="update-date">{item.date}</div>
+            <div>
+              <div class="update-title">
+                {item.link && <a href={item.link}>{item.title}</a>}
+                {!item.link && <span>{item.title}</span>}
+              </div>
+              <div class="muted">{item.description}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <a class="updates-more" href="/updates">View all updates</a>
+    </aside>
+  </div>
+
+  <section class="surface stats">
+    {stats.map((stat) => (
+      <div class="stat">
+        <div class="stat-value">{stat.value}</div>
+        <div class="stat-label">{stat.label}</div>
+      </div>
+    ))}
+  </section>
+
+  <section class="grid">
+    {tracks.map((track) => (
+      <a class="card track" href={track.href}>
+        <div class="card-top">
+          <span class="pill">{track.badge}</span>
+          <span class="badge">MCQ drills</span>
+        </div>
+        <h2>{track.title}</h2>
+        <p class="muted">{track.blurb}</p>
+        <div class="go">Open deck →</div>
+      </a>
+    ))}
+  </section>
+
+  <section class="surface about">
+    <div class="about-copy">
+      <p class="eyebrow">About this project</p>
+      <h2>Built from personal study notes</h2>
+      <p class="muted">
+        I created this site while preparing for AWS exams. I take structured notes when I study, and this is my way
+        to turn those notes into short drills and flashcards so others can learn faster too.
+      </p>
+    </div>
+    <div class="about-card">
+      <div class="about-pill">Open-source</div>
+      <p class="muted">
+        If you find outdated content, please open a PR. The goal is to keep the material sharp and community‑verified.
+      </p>
+    </div>
+  </section>
+
+  <section class="surface tips">
+    <div>
+      <p class="eyebrow">How to use</p>
+      <ul>
+        <li>Answer fast; explanations appear instantly so you can calibrate intuition.</li>
+        <li>Track your streak; reset anytime to simulate a timed block.</li>
+        <li>Use edge-focused decks before labs to wire in the right defaults.</li>
+      </ul>
+    </div>
+    <div class="pillars">
+      <div class="mini">
+        <h3>Scenario-first</h3>
+        <p class="muted">Each question encodes a real architectural tension—operational overhead, blast radius, or latency.</p>
+      </div>
+      <div class="mini">
+        <h3>Concise UI</h3>
+        <p class="muted">No clutter, just clean cards, readable fonts, and quick feedback loops.</p>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.3fr 0.8fr;
+      gap: 14px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      margin: 10px 0 14px;
+      letter-spacing: -0.03em;
+      font-size: clamp(30px, 5vw, 48px);
+      max-width: 760px;
+    }
+    .hero .lede {
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.6;
+      margin: 0 0 18px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .primary {
+      background: linear-gradient(var(--bg), var(--bg)) padding-box,
+        linear-gradient(120deg, var(--accent), var(--accent-2)) border-box;
+      color: var(--accent);
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      box-shadow: none;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease, color 0.12s ease;
+    }
+    .primary:hover {
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #05060a;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    }
+    .ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 600;
+      transition: border 0.2s ease, transform 0.1s ease, background 0.2s ease, color 0.2s ease;
+    }
+    .ghost:hover {
+      border-color: transparent;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #05060a;
+      transform: translateY(-1px);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 22px 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.12s ease, border 0.12s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(109, 236, 185, 0.8);
+    }
+    .track h2 {
+      margin: 12px 0 6px;
+      letter-spacing: -0.01em;
+    }
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .go {
+      margin-top: 14px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .about {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin: 22px 0;
+      align-items: center;
+    }
+    .about h2 {
+      margin: 8px 0 10px;
+      letter-spacing: -0.02em;
+    }
+    .about-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      box-shadow: var(--shadow);
+    }
+    .about-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .updates {
+      margin: 0;
+    }
+    .updates-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .updates-list {
+      display: grid;
+      gap: 10px;
+      max-height: 350px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) rgba(255, 255, 255, 0.05);
+    }
+    .updates-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .updates-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+    }
+    .updates-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .updates-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .updates-more:hover {
+      color: var(--accent-2);
+    }
+    .update {
+      display: grid;
+      gap: 4px;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .update-date {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .update-title {
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 12px 0 18px;
+    }
+    .stat {
+      border: 1px solid transparent;
+      border-radius: 16px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(109, 236, 185, 0.08), rgba(130, 180, 255, 0.08));
+      box-shadow: var(--shadow);
+      text-align: left;
+      display: grid;
+      gap: 6px;
+    }
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 0;
+    }
+    .tips {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 18px;
+    }
+    .tips ul {
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .mini {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 14px;
+    }
+    .mini h3 {
+      margin: 0 0 6px;
+    }
+    code {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: var(--accent);
+      font-size: 13px;
+    }
+    @media (max-width: 900px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+      .updates {
+        order: 2;
+      }
+      .about {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 760px) {
+      .tips {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

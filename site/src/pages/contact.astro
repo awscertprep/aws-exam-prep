@@ -1,0 +1,148 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const formEndpoint = "https://formspree.io/f/mykygggk";
+---
+
+<BaseLayout
+  title="Contact | AWS Exam Prep"
+  description="Get in touch about the AWS certification practice site."
+>
+  <section class="surface">
+    <div class="eyebrow">Contact</div>
+    <h1>Get in touch</h1>
+    <p class="muted">
+      Questions, corrections, or partnership ideas? Send a note and we’ll reply as soon as we can.
+    </p>
+
+    <div class="contact-card">
+      <div class="contact-block">
+        <h3>Contact Form</h3>
+        <form class="contact-form" method="POST" action={formEndpoint}>
+          <div class="form-grid">
+            <label>
+              Name
+              <input name="name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" name="_replyto" required />
+            </label>
+          </div>
+          <label class="full">
+            Message
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <input type="text" name="_gotcha" class="hidden-field" tabindex="-1" autocomplete="off" />
+          <button type="submit">Send</button>
+        </form>
+      </div>
+      <div class="contact-block">
+        <h3>Contribute</h3>
+        <p class="muted">Found an outdated question? Open a pull request via the GitHub link in the footer.</p>
+      </div>
+      <div class="contact-block">
+        <h3>Support</h3>
+        <a class="support-btn" href="https://ko-fi.com/awscertprep" target="_blank" rel="noreferrer">
+          Buy me a coffee
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .contact-card {
+      display: grid;
+      gap: 14px;
+      align-items: flex-start;
+      max-width: 720px;
+    }
+    .contact-block {
+      width: 100%;
+    }
+    .contact-block h3 {
+      margin-bottom: 8px;
+    }
+    .contact-form {
+      display: grid;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    label {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    input,
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s ease, background 0.2s ease;
+    }
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      background: rgba(109, 236, 185, 0.08);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+      box-sizing: border-box;
+    }
+    .hidden-field {
+      position: absolute;
+      left: -9999px;
+    }
+    button {
+      justify-self: flex-start;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #05060a;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      box-shadow: var(--shadow);
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    }
+    .support-btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      color: #05060a;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .support-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,36 @@
+{
+  "exam": "SAP-C02",
+  "topic": "Core Architecture Flashcards",
+  "cards": [
+    {
+      "id": "fc-001",
+      "front": "Multi-AZ vs Multi-Region",
+      "back": "Multi-AZ improves availability within a Region; Multi-Region improves disaster recovery and latency resilience."
+    },
+    {
+      "id": "fc-002",
+      "front": "RPO vs RTO",
+      "back": "RPO = acceptable data loss window; RTO = acceptable recovery time window."
+    },
+    {
+      "id": "fc-003",
+      "front": "Global Accelerator",
+      "back": "Anycast static IPs, health-based failover, and optimized routing via the AWS edge."
+    },
+    {
+      "id": "fc-004",
+      "front": "Transit Gateway",
+      "back": "Hub-and-spoke network for VPCs and on-prem connectivity with centralized routing."
+    },
+    {
+      "id": "fc-005",
+      "front": "KMS CMK",
+      "back": "Customer-managed keys allow fine-grained access control, rotation, and auditability."
+    },
+    {
+      "id": "fc-006",
+      "front": "Aurora Replication",
+      "back": "Six-way storage replication across three AZs; reader endpoints for scale-out reads."
+    }
+  ]
+}

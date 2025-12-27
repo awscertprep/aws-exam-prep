@@ -1,0 +1,151 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import data from "../../../../content/aws/sap-c02/flashcards/overview.json";
+
+const { exam, topic, cards } = data;
+---
+
+<BaseLayout
+  title={`${exam} – Flashcards | AWS Exam Prep`}
+  description="Quick-flip flashcards to recap core AWS architecture concepts."
+  currentExam="sap-c02"
+>
+  <section class="surface hero">
+    <div class="eyebrow">{exam}</div>
+    <h1>{topic}</h1>
+    <p class="lede">
+      Fast recall for key terms and tradeoffs. Click a card to flip and check your understanding.
+    </p>
+    <div class="meta">
+      <span class="chip">Cards: {cards.length}</span>
+      <span class="chip">Mode: tap to flip</span>
+    </div>
+  </section>
+
+  <section class="grid">
+    {cards.map((card) => (
+      <button class="flashcard" type="button" data-card>
+        <div class="card-face front">
+          <h3>{card.front}</h3>
+        </div>
+        <div class="card-face back">
+          <span class="label">Back</span>
+          <p>{card.back}</p>
+        </div>
+      </button>
+    ))}
+  </section>
+
+  <section class="surface related">
+    <p class="eyebrow">Related decks</p>
+    <div class="related-links">
+      <a href="/aws/sap-c02/architect-network-connectivity-strategies">Architect network connectivity strategies</a>
+      <a href="/aws/sap-c02/prescribe-security-controls">Prescribe security controls</a>
+      <a href="/aws/sap-c02/design-reliable-and-resilient-architectures">Design reliable and resilient architectures</a>
+    </div>
+  </section>
+
+  <style>
+    .hero h1 {
+      margin: 8px 0 12px;
+      letter-spacing: -0.03em;
+      font-size: clamp(28px, 4vw, 40px);
+    }
+    .hero .lede {
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 16px;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .flashcard {
+      position: relative;
+      height: 220px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      perspective: 1000px;
+      box-shadow: var(--shadow);
+    }
+    .card-face {
+      position: absolute;
+      inset: 0;
+      padding: 18px;
+      border-radius: 16px;
+      background: var(--card);
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+      transition: transform 0.6s ease;
+      color: var(--text);
+    }
+    .front {
+      transform: rotateY(0deg);
+    }
+    .back {
+      transform: rotateY(180deg);
+    }
+    .flashcard.is-flipped .front {
+      transform: rotateY(180deg);
+    }
+    .flashcard.is-flipped .back {
+      transform: rotateY(360deg);
+    }
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+    h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    p {
+      margin: 0;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .related {
+      margin-top: 18px;
+    }
+    .related-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .related-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      transition: border 0.2s ease, transform 0.1s ease;
+    }
+    .related-links a:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+  </style>
+
+  <script>
+    const cards = Array.from(document.querySelectorAll('[data-card]'));
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(other => {
+          if (other !== card) other.classList.remove('is-flipped');
+        });
+        card.classList.toggle('is-flipped');
+      });
+    });
+  </script>
+</BaseLayout>

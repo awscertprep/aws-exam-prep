@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2025-12-27",
+    "title": "Services section launched",
+    "description": "Added the new Services section with an Amazon EC2 deep-dive page.",
+    "link": "/services"
+  },
+  {
+    "date": "2025-12-26",
+    "title": "Architect network connectivity strategies updated - SAP-C02",
+    "description": "Added 10 MCQs covering Transit Gateway, Direct Connect, VPC endpoints, and routing costs.",
+    "link": "/aws/sap-c02/architect-network-connectivity-strategies"
+  },
+  {
+    "date": "2025-12-26",
+    "title": "Flashcards recap added",
+    "description": "Introduced SAP-C02 flashcards for quick concept refresh.",
+    "link": "/aws/sap-c02/flashcards"
+  },
+  {
+    "date": "2025-12-26",
+    "title": "DevOps Pro pipelines deck",
+    "description": "Published a DOP-C02 pipelines MCQ deck with scoring and shuffle behavior.",
+    "link": "/aws/dop-c02/pipelines"
+  },
+  {
+    "date": "2025-12-26",
+    "title": "SAP-C02 deck hub",
+    "description": "Introduced a SAP-C02 landing page plus redesigned HA/Networking/Security decks.",
+    "link": "/aws/sap-c02"
+  }
+]

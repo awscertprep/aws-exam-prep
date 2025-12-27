@@ -1,0 +1,136 @@
+{
+  "exam": "SAP-C02",
+  "topic": "Prescribe security controls",
+  "questions": [
+    {
+      "id": "sec-001",
+      "question": "A company operates multiple AWS accounts using AWS Organizations. The security team wants to proactively identify IAM roles or resource policies that allow access to principals outside the organization, without manually reviewing policies in each account. Which solution best meets this requirement?",
+      "options": [
+        "Enable AWS CloudTrail in all accounts and analyze AssumeRole and policy-related API calls using Athena to identify external access patterns",
+        "Use AWS IAM Access Analyzer to continuously evaluate IAM policies and trust relationships for unintended external access across accounts",
+        "Aggregate IAM-related findings from multiple accounts using AWS Security Hub as the primary detection mechanism",
+        "Deploy AWS Config managed rules to detect configuration changes to IAM roles and resource-based policies across the organization"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS IAM Access Analyzer is explicitly designed to analyze IAM policies and trust relationships to determine whether access is granted to principals outside an account or AWS Organization. It evaluates effective permissions automatically and produces findings without custom logic. CloudTrail records API activity but does not analyze policy intent or exposure. Security Hub can aggregate findings, but it depends on Access Analyzer to detect IAM policy exposure. AWS Config tracks configuration changes but does not reason about who can actually access a resource.",
+      "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+    },
+    {
+      "id": "sec-002",
+      "question": "An enterprise uses an external SAML 2.0–compliant identity provider for employee authentication and wants centralized access management across multiple AWS accounts using consistent permission assignments. The solution must scale automatically as new accounts are added. Which approach should the architect recommend?",
+      "options": [
+        "Create IAM roles in each account with SAML trust policies and manually manage role mappings in the external identity provider",
+        "Integrate the external identity provider with AWS IAM Identity Center and assign permission sets across AWS accounts",
+        "Use Amazon Cognito federated identities to grant workforce users access to AWS accounts and services",
+        "Deploy AWS Directory Service for Microsoft Active Directory and establish cross-account trust relationships"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS IAM Identity Center is designed for centralized workforce access across multiple AWS accounts. It integrates with external SAML 2.0 identity providers and uses permission sets to consistently manage access as accounts are added. Managing IAM roles individually does not scale and increases operational overhead. Amazon Cognito targets application users, not workforce access to AWS accounts. AWS Directory Service is optional and not required for SAML-based federation.",
+      "reference": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
+    },
+    {
+      "id": "sec-003",
+      "question": "A security team must ensure that all AWS API activity across an organization is centrally logged for audit and compliance purposes. The solution must automatically include new AWS accounts. Which design satisfies these requirements?",
+      "options": [
+        "Create a multi-region CloudTrail trail in each account and aggregate logs into a centralized Amazon S3 bucket",
+        "Enable AWS Config in the management account and rely on configuration history for audit evidence",
+        "Create an organization trail in AWS CloudTrail from the management account to log all accounts automatically",
+        "Enable AWS Security Hub in all accounts and export findings to a centralized logging account"
+      ],
+      "correctIndex": 2,
+      "explanation": "An organization trail in AWS CloudTrail records API activity for all current and future accounts in an AWS Organization automatically. This provides centralized, scalable audit logging without per-account configuration. Individual account trails require ongoing maintenance. AWS Config records configuration changes, not API calls. Security Hub aggregates security findings but does not capture comprehensive API audit logs.",
+      "reference": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html"
+    },
+    {
+      "id": "sec-004",
+      "question": "A regulated workload requires encryption of data at rest using keys that the organization fully controls, including the ability to audit key usage and revoke access if required. Which AWS service best supports these requirements?",
+      "options": [
+        "Use AWS Certificate Manager to manage encryption certificates for storage services",
+        "Enable default encryption on storage services without specifying key ownership or policies",
+        "Use AWS Key Management Service with customer-managed keys and centralized key policies",
+        "Store encryption secrets in AWS Secrets Manager and reference them from applications"
+      ],
+      "correctIndex": 2,
+      "explanation": "AWS KMS with customer-managed keys provides full control over key policies, enables auditing of key usage through CloudTrail, and allows keys to be disabled or revoked. This meets regulatory control requirements. ACM manages TLS certificates for data in transit. Default encryption without key control limits governance. Secrets Manager is designed for secret storage, not encryption key management.",
+      "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
+    },
+    {
+      "id": "sec-005",
+      "question": "A company wants a centralized view of security findings from GuardDuty, IAM Access Analyzer, and Amazon Inspector across all AWS accounts and regions, with normalized severity levels. Which AWS service should be used?",
+      "options": [
+        "Query CloudTrail Lake for security-related API activity across accounts",
+        "Use AWS Security Hub as the central aggregation and normalization service",
+        "Route findings from each service directly to Amazon EventBridge for custom processing",
+        "Manually export findings from each service and consolidate them periodically"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Security Hub aggregates, normalizes, and prioritizes security findings from multiple AWS security services across accounts and regions. CloudTrail Lake provides event analysis but not security posture management. EventBridge can route events but does not normalize findings or assign severity. Manual consolidation does not scale and increases operational risk.",
+      "reference": "https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html"
+    },
+    {
+      "id": "sec-006",
+      "question": "A solutions architect must enforce subnet-level network restrictions so that only approved IP ranges can access workloads, regardless of individual instance configuration. Which control should be used?",
+      "options": [
+        "Attach restrictive security groups to all instances in the subnet",
+        "Apply IAM policies to restrict network access based on source IP",
+        "Configure network ACLs on the subnet to explicitly allow and deny IP ranges",
+        "Update route tables to control inbound traffic paths"
+      ],
+      "correctIndex": 2,
+      "explanation": "Network ACLs operate at the subnet level and provide stateless filtering based on IP ranges and ports, ensuring enforcement regardless of instance security groups. Security groups are instance-level and stateful. IAM policies do not control VPC network traffic. Route tables control routing, not access control.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
+    },
+    {
+      "id": "sec-007",
+      "question": "A company needs to encrypt data in transit for internal services using AWS-managed TLS certificates that automatically renew without manual intervention. Which AWS service provides this capability?",
+      "options": [
+        "Use AWS KMS to manage encryption keys for TLS connections",
+        "Provision and manage certificates using AWS Certificate Manager",
+        "Store TLS private keys in AWS Secrets Manager and rotate them manually",
+        "Use IAM Identity Center to enforce encrypted connections"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Certificate Manager provisions, manages, and automatically renews TLS certificates for supported AWS services, enabling encryption in transit with minimal operational overhead. KMS manages encryption keys, not certificates. Secrets Manager does not automate certificate renewal. IAM Identity Center is unrelated to encryption.",
+      "reference": "https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html"
+    },
+    {
+      "id": "sec-008",
+      "question": "A security architect wants to determine whether IAM roles in any account can be assumed by principals outside the AWS Organization, without manually reviewing trust policies. Which service provides this visibility?",
+      "options": [
+        "Analyze CloudTrail AssumeRole events across accounts",
+        "Use AWS IAM Access Analyzer to evaluate role trust policies",
+        "Review AWS Organizations SCPs for external access",
+        "Track IAM role changes using AWS Config"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS IAM Access Analyzer evaluates IAM role trust policies to identify access granted to principals outside the organization. CloudTrail shows role assumption activity but not exposure. SCPs restrict permissions but do not analyze trust relationships. AWS Config tracks changes but does not assess effective access.",
+      "reference": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings.html"
+    },
+    {
+      "id": "sec-009",
+      "question": "A company wants centralized control over encryption keys used by multiple AWS services and accounts, with fine-grained access control and auditability. Which AWS KMS option should be used?",
+      "options": [
+        "Rely on AWS-owned keys managed entirely by AWS services",
+        "Use customer-managed keys with centralized key policies",
+        "Enable server-side encryption using service-managed keys only",
+        "Use ACM private certificate authorities for data encryption"
+      ],
+      "correctIndex": 1,
+      "explanation": "Customer-managed keys in AWS KMS provide centralized governance, key policies, auditing, and cross-account usage. AWS-owned and service-managed keys limit customer control. ACM private CAs manage certificates, not data-at-rest encryption.",
+      "reference": "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk"
+    },
+    {
+      "id": "sec-010",
+      "question": "A security team wants near real-time notifications when high-severity security findings occur across the organization, without building custom polling mechanisms. Which AWS-native solution supports this?",
+      "options": [
+        "Manually review CloudTrail logs for security-related API calls",
+        "Use AWS Security Hub integrated with Amazon EventBridge for automated notifications",
+        "Configure AWS Config rules and review compliance reports periodically",
+        "Rely on Amazon Inspector dashboards for vulnerability alerts"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Security Hub integrates with Amazon EventBridge to emit events for security findings, enabling automated notifications and response workflows. CloudTrail and Config require manual analysis. Inspector provides findings but does not centralize or route alerts across services by itself.",
+      "reference": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cwe.html"
+    }
+  ]
+}

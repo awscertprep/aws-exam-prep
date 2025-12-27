@@ -1,0 +1,289 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Amazon EC2 | AWS Exam Prep"
+  description="Documentation-driven EC2 notes covering defaults, limits, and real-world behaviors."
+>
+  <section class="surface hero">
+    <div class="eyebrow">AWS Service</div>
+    <h1>Amazon EC2</h1>
+    <p class="lede">
+      Amazon Elastic Compute Cloud (Amazon EC2) is a core AWS service, but its real behavior is
+      defined by defaults, limits, and interactions that are easy to miss. Beyond launching
+      instances, EC2 involves explicit rules around networking, storage, security, availability,
+      and cost that directly shape system design.
+    </p>
+    <p class="muted">
+      This guide is documentation-driven and focuses on how EC2 actually works in practice, with
+      architectural constraints and behaviors that matter in production and exams.
+    </p>
+    <p class="muted">Note: Portions of this page were AI-formatted; please flag any inaccuracies via a PR.</p>
+    <div class="meta">
+      <span class="chip">Topic: <strong>Compute</strong></span>
+    </div>
+  </section>
+
+  <section class="surface">
+    <h2>1. Service core concepts</h2>
+    <h3>What Amazon EC2 does</h3>
+    <p>
+      "Amazon Elastic Compute Cloud (Amazon EC2) provides on-demand, scalable computing capacity in
+      the AWS Cloud." An EC2 instance is a "virtual server in the AWS Cloud."
+    </p>
+    <h3>Instance types</h3>
+    <p>
+      Instance type determines the hardware available (compute, memory, network, storage balance).
+    </p>
+    <h3>Primary exam-tested use cases</h3>
+    <ul>
+      <li>Launch and manage virtual servers; scale capacity up or down for workload demand.</li>
+      <li>Use with common supporting services like Auto Scaling, ELB, and CloudWatch.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html">EC2 concepts</a>,
+      <a href="https://docs.aws.amazon.com/ec2/latest/instancetypes/instance-types.html">instance types</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>2. Architectural components and interactions</h2>
+    <h3>Key components</h3>
+    <ul>
+      <li>Instances (virtual servers), AMIs (templates), instance types (hardware configs).</li>
+      <li>EBS volumes (persistent), instance store volumes (temporary).</li>
+      <li>Key pairs (AWS stores public key; you store private key).</li>
+      <li>Security groups (virtual firewall controlling inbound and outbound).</li>
+    </ul>
+    <h3>How components interact in real architectures</h3>
+    <ul>
+      <li>Instances run in a VPC subnet in an Availability Zone; security groups attach to the ENI.</li>
+      <li>Scaling patterns: EC2 Auto Scaling manages instance count; ELB distributes incoming traffic.</li>
+      <li>Monitoring: CloudWatch monitors instances and EBS volumes.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html">EC2 concepts</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/regions-availability-zones.html">Regions and AZs</a>,
+      <a href="https://docs.aws.amazon.com/autoscaling/">Auto Scaling</a>,
+      <a href="https://docs.aws.amazon.com/elasticloadbalancing/">Elastic Load Balancing</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>3. Defaults, limits, and gotchas (exam-critical)</h2>
+    <h3>Defaults</h3>
+    <ul>
+      <li>If you do not specify a security group, EC2 uses the default security group for the VPC.</li>
+      <li>
+        Security groups are stateful: response traffic is allowed regardless of inbound or outbound
+        rules; rule changes do not immediately interrupt tracked connections.
+      </li>
+      <li>
+        EBS-backed AMI encryption defaults: without explicit parameters, AWS maintains the existing
+        encryption state of source snapshots. "Encryption by default" changes behavior.
+      </li>
+      <li>
+        For instance store (NVMe): encryption is always on, you cannot disable it, and you cannot
+        provide your own key. Keys are destroyed on stop or terminate.
+      </li>
+    </ul>
+    <h3>Limits and quotas</h3>
+    <ul>
+      <li>EC2 service limits are per-Region and visible in the EC2 Service Limits page.</li>
+      <li>Limits are generally managed via Service Quotas.</li>
+    </ul>
+    <h3>This will not work if</h3>
+    <ul>
+      <li>Submitting KmsKeyId without Encrypted results in an error for encryption operations.</li>
+      <li>
+        To run NAT, routing, or firewall on an instance, you must disable source and destination
+        checking on the network interface.
+      </li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/general/latest/gr/ec2-service.html#limits_ec2">EC2 limits</a>,
+      <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html">AWS service limits</a>,
+      <a href="https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html">security group rules</a>,
+      <a href="https://docs.aws.amazon.com/ebs/latest/userguide/encryption-by-default.html">EBS encryption by default</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>4. Security and identity</h2>
+    <h3>IAM integration and trust model</h3>
+    <ul>
+      <li>IAM controls authentication and authorization for EC2 resources.</li>
+      <li>
+        IAM roles for EC2 let apps make API requests without distributing long-term credentials;
+        apps retrieve temporary credentials from IMDS.
+      </li>
+      <li>Instance profile is a container for an IAM role; one role per instance.</li>
+      <li>
+        Operational gotcha: removing a role from an instance profile can take up to one hour to
+        take effect.
+      </li>
+    </ul>
+    <h3>Network security boundaries</h3>
+    <ul>
+      <li>Security groups are the primary mechanism; NACLs are stateless guard rails.</li>
+      <li>AWS enforces network isolation based on assigned MAC and IP.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html">IAM roles for EC2</a>,
+      <a href="https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html">security groups</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>5. High availability, scaling, and failure modes</h2>
+    <h3>AZ and Region behavior</h3>
+    <ul>
+      <li>Regions are isolated; AWS does not automatically replicate resources across Regions.</li>
+      <li>Each Region has multiple AZs; distribute instances across AZs for resilience.</li>
+    </ul>
+    <h3>Native scaling and resiliency mechanisms</h3>
+    <ul>
+      <li>Auto Scaling maintains fleet health and availability.</li>
+      <li>ELB distributes traffic across instances in single or multiple AZs.</li>
+      <li>Copy AMIs and EBS snapshots across Regions for disaster recovery.</li>
+      <li>Data Lifecycle Manager can automate snapshot and AMI lifecycle workflows.</li>
+    </ul>
+    <h3>Failure scenarios candidates must recognize</h3>
+    <ul>
+      <li>Single-location dependency risk if all instances are in one AZ.</li>
+      <li>Spot interruption notice provides a two-minute warning.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/regions-availability-zones.html">Regions and AZs</a>,
+      <a href="https://docs.aws.amazon.com/autoscaling/">Auto Scaling</a>,
+      <a href="https://docs.aws.amazon.com/elasticloadbalancing/">ELB</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/initiate-a-spot-instance-interruption.html">Spot interruption</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>6. Performance and cost trade-offs</h2>
+    <h3>Performance characteristics tied to configuration</h3>
+    <ul>
+      <li>Enhanced networking can significantly improve packet-per-second performance.</li>
+      <li>EFA accelerates HPC and ML workloads on supported instance types.</li>
+      <li>Instance bandwidth specs apply to inbound and outbound simultaneously.</li>
+      <li>Burstable (T) instances can be standard or unlimited; unlimited can incur charges.</li>
+    </ul>
+    <h3>Cost drivers that appear in scenarios</h3>
+    <ul>
+      <li>On-Demand instance hours, Spot hours, Dedicated Hosts, Dedicated Instances.</li>
+      <li>Dedicated Instances include a per-Region fee.</li>
+      <li>EBS optimization hours, Capacity Reservations (including unused).</li>
+    </ul>
+    <h3>When AWS documentation recommends alternatives</h3>
+    <ul>
+      <li>Lightsail vs EC2 for simplified workloads.</li>
+      <li>ECS/EKS for containers when orchestration is required.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://aws.amazon.com/ec2/pricing/">EC2 pricing</a>,
+      <a href="https://aws.amazon.com/ec2/pricing/on-demand/">On-Demand pricing</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html">network bandwidth</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html">EBS optimized</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>7. Service integrations (exam patterns)</h2>
+    <h3>Commonly paired services and purpose</h3>
+    <ul>
+      <li>EC2 Auto Scaling: ensure correct number of instances for load.</li>
+      <li>Elastic Load Balancing: distribute incoming traffic across instances.</li>
+      <li>CloudWatch: monitor instances and EBS volumes.</li>
+      <li>AWS Backup: automate backups of EC2 instances and attached EBS volumes.</li>
+      <li>Systems Manager: operations at scale; patching guidance for managed fleets.</li>
+      <li>GuardDuty: detect potentially unauthorized or malicious use of EC2 instances.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/autoscaling/">Auto Scaling</a>,
+      <a href="https://docs.aws.amazon.com/elasticloadbalancing/">ELB</a>,
+      <a href="https://docs.aws.amazon.com/cloudwatch/">CloudWatch</a>,
+      <a href="https://docs.aws.amazon.com/systems-manager/">Systems Manager</a>,
+      <a href="https://docs.aws.amazon.com/guardduty/">GuardDuty</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>8. Comparison triggers</h2>
+    <ul>
+      <li>EC2 vs Lightsail (simplified workloads).</li>
+      <li>EC2 vs ECS/EKS for deploying and managing containers.</li>
+    </ul>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html">EC2 concepts</a>,
+      <a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html">ECS</a>,
+      <a href="https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html">EKS</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>9. Exam traps and misleading assumptions</h2>
+    <h3>Trap: Security groups are stateless like NACLs</h3>
+    <p>
+      Reality: security groups are stateful and use connection tracking. Rule changes do not
+      immediately interrupt tracked connections; NACLs can because they are stateless.
+    </p>
+    <h3>Trap: You can attach multiple IAM roles to one instance</h3>
+    <p>Reality: you can attach one IAM role to an instance (via instance profile).</p>
+    <h3>Trap: Instance store encryption is optional</h3>
+    <p>
+      Reality: instance store (NVMe) encryption is always on; you cannot disable it or provide your
+      own key; keys are destroyed on stop or terminate.
+    </p>
+    <h3>Trap: You can set KmsKeyId alone when changing encryption state</h3>
+    <p>Reality: submitting KmsKeyId without also setting Encrypted results in an error.</p>
+    <p class="muted">
+      References:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-connection-tracking.html#connection-tracking-timeouts">SG connection tracking</a>,
+      <a href="https://docs.aws.amazon.com/vpc/latest/userguide/network-acls.html">network ACLs</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html">IAM roles</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html">data protection</a>,
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIEncryption.html">AMI encryption</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>10. Quick-recall checklist</h2>
+    <ul>
+      <li>EC2 provides on-demand, scalable compute capacity; an instance is a virtual server.</li>
+      <li>Instance type defines compute, memory, network, and storage balance.</li>
+      <li>AMIs are templates; EBS is persistent; instance store is temporary.</li>
+      <li>Default security group used if you do not specify one at launch.</li>
+      <li>Security groups are stateful; connection tracking means rule changes are not instant.</li>
+      <li>Regions are isolated; use multi-AZ to handle single-location failures.</li>
+      <li>Spot interruption notice: two-minute warning.</li>
+      <li>EBS encryption defaults preserve snapshot state unless encryption by default is enabled.</li>
+      <li>Instance store (NVMe) encryption is always on; keys destroyed on stop or terminate.</li>
+      <li>One IAM role per instance (via instance profile); IMDS provides temporary credentials.</li>
+    </ul>
+    <p class="muted">
+      Reference:
+      <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html">EC2 concepts</a>
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>Conclusion</h2>
+    <p class="muted">
+      Amazon EC2 is simple in concept but precise in operation. Its behavior is governed by
+      defaults, limits, and security boundaries that influence reliability, performance, and cost.
+      Understanding EC2 at this level means relying on documented behavior rather than
+      assumptions.
+    </p>
+  </section>
+</BaseLayout>

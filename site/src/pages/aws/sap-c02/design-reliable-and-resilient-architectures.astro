@@ -1,0 +1,389 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import mcqData from "../../../../content/aws/sap-c02/mcqs/design-reliable-and-resilient-architectures.json";
+
+const { exam, topic, questions } = mcqData;
+---
+
+<BaseLayout
+  title={`${exam} – ${topic} | AWS Exam Prep`}
+  description="SAP-C02 reliability and resilience drills."
+  currentExam="sap-c02"
+>
+  <section class="surface hero">
+    <div class="eyebrow">{exam}</div>
+    <h1>{topic}</h1>
+    <p class="lede">
+      Practice for high availability, recovery objectives, and failure-domain design.
+    </p>
+    <div class="meta">
+      <span class="chip">Exam: {exam}</span>
+      <span class="chip">Questions: {questions.length}</span>
+    </div>
+  </section>
+
+  {questions.length === 0 && (
+    <section class="surface empty">
+      <h2>Deck coming soon</h2>
+      <p class="muted">I’m actively adding questions here. Check back soon.</p>
+    </section>
+  )}
+
+  {questions.length > 0 && (
+    <>
+      <section class="grid">
+        {questions.map((q, idx) => (
+          <article class="card mcq-card" data-correct={q.correctIndex}>
+            <div class="card-header">
+              <div class="pill">Question {idx + 1}</div>
+            </div>
+            <h3>{q.question}</h3>
+            <div class="options">
+              {q.options.map((opt, index) => (
+                <button class="option" data-index={index} type="button">
+                  <span class="dot"></span>
+                  <span>{opt}</span>
+                  <span class="check" aria-hidden="true">✓</span>
+                </button>
+              ))}
+            </div>
+          <div class="explanation">
+            <div class="label">Explanation</div>
+            <p>{q.explanation}</p>
+            {q.reference && (
+              <a class="ref-link" href={q.reference} target="_blank" rel="noreferrer">
+                Reference
+              </a>
+            )}
+          </div>
+          </article>
+        ))}
+      </section>
+
+      <aside class="surface recap">
+        <div class="recap-row">
+          <div>
+            <p class="eyebrow">Streak</p>
+            <h2 id="score">0 / {questions.length}</h2>
+          </div>
+          <div>
+            <p class="eyebrow">Answered</p>
+            <h2 id="answered">0</h2>
+          </div>
+          <button class="ghost" type="button" id="reset">Reset session</button>
+        </div>
+        <p class="tiny">
+          Tip: Anchor on RTO/RPO tradeoffs, multi-AZ patterns, and isolation boundaries.
+        </p>
+      </aside>
+    </>
+  )}
+
+  <section class="surface related">
+    <p class="eyebrow">Related decks</p>
+    <div class="related-links">
+      <a href="/aws/sap-c02/architect-network-connectivity-strategies">Architect network connectivity strategies</a>
+      <a href="/aws/sap-c02/design-multi-account-aws-environment">Design a multi-account AWS environment</a>
+      <a href="/aws/sap-c02/flashcards">Flashcards (Quick Recap)</a>
+    </div>
+  </section>
+
+  <style>
+    .hero h1 {
+      margin: 8px 0 12px;
+      letter-spacing: -0.03em;
+      font-size: clamp(28px, 4vw, 40px);
+    }
+    .hero .lede {
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 16px;
+      line-height: 1.6;
+    }
+    .empty {
+      margin-top: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 20px;
+      border-radius: 16px;
+      position: relative;
+      overflow: visible;
+      box-shadow: var(--shadow);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .badge {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .options {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .option {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+      transition: border 0.2s ease, transform 0.1s ease;
+    }
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: rgba(109, 236, 185, 0.7);
+    }
+    .option .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+    .option .check {
+      opacity: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .option.correct {
+      border-color: rgba(109, 236, 185, 0.9);
+      background: rgba(109, 236, 185, 0.1);
+    }
+    .option.correct .dot {
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    .option.correct .check {
+      opacity: 1;
+    }
+    .option.wrong {
+      border-color: rgba(255, 107, 107, 0.8);
+      background: rgba(255, 107, 107, 0.08);
+    }
+    .explanation {
+      margin-top: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      display: none;
+    }
+    .explanation .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .ref-link {
+      display: inline-flex;
+      margin-top: 8px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .recap {
+      margin-top: 22px;
+    }
+    .recap-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: border 0.2s ease, transform 0.1s ease;
+    }
+    .ghost:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .tiny {
+      color: var(--muted);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    :global(.confetti-burst) {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    :global(.confetti-burst span) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 10px;
+      height: 16px;
+      border-radius: 2px;
+      animation: confetti-pop 1s ease-out forwards;
+      transform: translate(-50%, -50%) rotate(0deg);
+      opacity: 0.95;
+    }
+    @keyframes confetti-pop {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, -60px))) rotate(320deg);
+        opacity: 0;
+      }
+    }
+    .related {
+      margin-top: 18px;
+    }
+    .related-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .related-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      transition: border 0.2s ease, transform 0.1s ease;
+    }
+    .related-links a:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    @media (max-width: 720px) {
+      .recap-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  {questions.length > 0 && (
+    <script>
+      const shuffle = (arr) => {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      };
+
+      const grid = document.querySelector('.grid');
+      const shuffledCards = shuffle([...grid.querySelectorAll('.mcq-card')]);
+      shuffledCards.forEach((card) => grid.appendChild(card));
+
+      const cards = shuffledCards;
+      cards.forEach((card, idx) => {
+        const label = card.querySelector('.pill');
+        if (label) label.textContent = `Question ${idx + 1}`;
+      });
+
+      const scoreEl = document.querySelector('#score');
+      const answeredEl = document.querySelector('#answered');
+      const resetBtn = document.querySelector('#reset');
+      const total = cards.length;
+
+      let score = 0;
+      let answered = 0;
+
+      const updateScore = () => {
+        scoreEl.textContent = `${score} / ${total}`;
+        answeredEl.textContent = answered;
+      };
+
+      const celebrate = (card) => {
+        const burst = document.createElement('div');
+        burst.className = 'confetti-burst';
+        const colors = ['#6decb9', '#82b4ff', '#ffd166', '#ff6b6b'];
+        for (let i = 0; i < 18; i++) {
+          const piece = document.createElement('span');
+          piece.style.background = colors[i % colors.length];
+          piece.style.setProperty('--x', `${(Math.random() * 160) - 80}px`);
+          piece.style.setProperty('--y', `${-60 - Math.random() * 80}px`);
+          burst.appendChild(piece);
+        }
+        card.appendChild(burst);
+        setTimeout(() => burst.remove(), 1000);
+      };
+
+      cards.forEach(card => {
+        const correct = card.dataset.correct;
+        const optionsContainer = card.querySelector('.options');
+        const optionNodes = [...optionsContainer.querySelectorAll('.option')];
+        const shuffledOptions = shuffle(optionNodes);
+        shuffledOptions.forEach(opt => optionsContainer.appendChild(opt));
+
+        const options = shuffledOptions;
+        const explanation = card.querySelector('.explanation');
+
+        options.forEach(opt => {
+          opt.addEventListener('click', () => {
+            const alreadyAnswered = card.dataset.answered === 'true';
+
+            options.forEach(o => o.classList.remove('correct', 'wrong'));
+
+            if (opt.dataset.index === correct) {
+              opt.classList.add('correct');
+              if (!alreadyAnswered) score += 1;
+              celebrate(card);
+            } else {
+              opt.classList.add('wrong');
+              card.querySelector(`.option[data-index="${correct}"]`).classList.add('correct');
+            }
+
+            if (!alreadyAnswered) {
+              answered += 1;
+              card.dataset.answered = 'true';
+            }
+
+            explanation.style.display = 'block';
+            updateScore();
+          });
+        });
+      });
+
+      resetBtn.addEventListener('click', () => {
+        score = 0;
+        answered = 0;
+        cards.forEach(card => {
+          card.dataset.answered = 'false';
+          card.querySelectorAll('.option').forEach(opt => opt.classList.remove('correct', 'wrong'));
+          card.querySelector('.explanation').style.display = 'none';
+        });
+        updateScore();
+      });
+
+      updateScore();
+    </script>
+  )}
+</BaseLayout>

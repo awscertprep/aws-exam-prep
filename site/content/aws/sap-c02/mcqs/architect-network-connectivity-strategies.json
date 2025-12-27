@@ -1,0 +1,136 @@
+{
+  "exam": "SAP-C02",
+  "topic": "Architect network connectivity strategies",
+  "questions": [
+    {
+      "id": "net-001",
+      "question": "A company has 15 VPCs across multiple AWS accounts and regions that need to communicate with each other. The current architecture uses VPC peering connections, but the network team is concerned about the complexity of managing multiple peering relationships and wants to simplify the architecture. What is the most scalable solution to connect all VPCs while minimizing operational overhead?",
+      "options": [
+        "Continue using VPC peering connections but implement a hub-and-spoke model with one central VPC",
+        "Deploy AWS Transit Gateway in each region and use inter-region peering to connect the transit gateways",
+        "Use AWS Direct Connect with multiple virtual interfaces to connect all VPCs",
+        "Implement a mesh network using VPC peering connections between all VPCs"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Transit Gateway provides a hub and spoke design for connecting VPCs and on-premises networks as a fully managed service without requiring you to provision virtual appliances. Inter-region peering connects transit gateways together using the AWS Global Infrastructure, making it the most scalable solution for connecting multiple VPCs across regions while minimizing operational overhead.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html"
+    },
+    {
+      "id": "net-002",
+      "question": "An enterprise needs to establish connectivity between their on-premises data center and multiple VPCs in different AWS regions. They require a solution that provides dedicated bandwidth, avoids internet routing, and can connect to VPCs globally from a single connection point. Which combination of AWS services best meets these requirements?",
+      "options": [
+        "AWS Site-to-Site VPN with multiple customer gateways",
+        "AWS Direct Connect with a Direct Connect gateway",
+        "AWS Transit Gateway with VPN attachments",
+        "Multiple AWS Direct Connect connections in each region"
+      ],
+      "correctIndex": 1,
+      "explanation": "A Direct Connect gateway is a globally available resource that enables you to connect to any Region globally using a Direct Connect gateway. It allows you to use your Direct Connect connection in one region to access VPCs in multiple regions, providing dedicated bandwidth without internet routing.",
+      "reference": "https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html"
+    },
+    {
+      "id": "net-003",
+      "question": "A financial services company needs to ensure that all network traffic between their VPCs remains encrypted in transit. They are using AWS Transit Gateway to connect multiple VPCs. What feature should they enable to enforce encryption for all traffic flowing through the transit gateway?",
+      "options": [
+        "Enable AWS PrivateLink for all VPC attachments",
+        "Configure IPSec tunnels between all VPC attachments",
+        "Enable Encryption control on the transit gateway",
+        "Use AWS Certificate Manager to manage encryption certificates"
+      ],
+      "correctIndex": 2,
+      "explanation": "A transit gateway can be configured to support Encryption control, which enforces encryption-in-transit for all traffic on VPCs attached to the transit gateway. When Encryption control is enabled, the transit gateway can be attached to VPCs with Encryption control enforced, ensuring that all traffic flowing through the transit gateway is encrypted.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html"
+    },
+    {
+      "id": "net-004",
+      "question": "A company wants to provide private connectivity from their VPC to Amazon S3 and DynamoDB without routing traffic through the internet gateway or NAT device. They need a cost-effective solution that doesn't require additional charges for the endpoint itself. Which type of VPC endpoint should they implement?",
+      "options": [
+        "Interface VPC endpoints using AWS PrivateLink",
+        "Gateway VPC endpoints",
+        "Network Load Balancer endpoints",
+        "Application Load Balancer endpoints"
+      ],
+      "correctIndex": 1,
+      "explanation": "Gateway VPC endpoints provide reliable connectivity to Amazon S3 and DynamoDB without requiring an internet gateway or a NAT device for your VPC. There is no additional charge for using gateway endpoints, making them the most cost-effective solution for private connectivity to these services.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html"
+    },
+    {
+      "id": "net-005",
+      "question": "A network administrator needs to troubleshoot connectivity issues between EC2 instances in different subnets. They want to capture and analyze IP traffic information to determine if security group rules are too restrictive. Which AWS service should they use to collect this network traffic data?",
+      "options": [
+        "AWS CloudTrail",
+        "Amazon CloudWatch Metrics",
+        "VPC Flow Logs",
+        "AWS Config"
+      ],
+      "correctIndex": 2,
+      "explanation": "VPC Flow Logs is a feature that enables you to capture information about the IP traffic going to and from network interfaces in your VPC. Flow logs can help with diagnosing overly restrictive security group rules, monitoring the traffic that is reaching your instance, and determining the direction of the traffic to and from the network interfaces.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"
+    },
+    {
+      "id": "net-006",
+      "question": "A company has established VPC peering connections between VPCs in us-east-1 and eu-west-1 regions. The network team wants to understand the data transfer costs. According to AWS pricing for VPC peering connections, which statement is correct about data transfer charges?",
+      "options": [
+        "All data transfer over VPC peering connections is free regardless of location",
+        "Data transfer within the same Availability Zone is free, but charges apply for cross-AZ and cross-region traffic",
+        "Data transfer charges apply only for traffic between different AWS accounts",
+        "Data transfer is charged at standard internet rates for all VPC peering traffic"
+      ],
+      "correctIndex": 1,
+      "explanation": "According to AWS documentation, there is no charge to create a VPC peering connection. All data transfer over a VPC peering connection that stays within an Availability Zone is free, even if it's between different accounts. Charges apply for data transfer over VPC peering connections that cross Availability Zones and Regions.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html"
+    },
+    {
+      "id": "net-007",
+      "question": "An organization needs to connect their on-premises network to AWS with both dedicated connectivity and backup connectivity for high availability. They want to combine AWS Direct Connect with a managed VPN solution. Which connectivity option provides this hybrid approach?",
+      "options": [
+        "AWS Direct Connect with multiple virtual interfaces",
+        "AWS Direct Connect + AWS Site-to-Site VPN",
+        "AWS Transit Gateway with Direct Connect and VPN attachments",
+        "AWS Client VPN with Direct Connect backup"
+      ],
+      "correctIndex": 1,
+      "explanation": "With AWS Direct Connect + AWS Site-to-Site VPN, you can combine AWS Direct Connect connections with an AWS-managed VPN solution. AWS Direct Connect public VIFs establish a dedicated network connection between your network and public AWS resources such as an AWS Site-to-Site VPN endpoint, providing both dedicated connectivity and managed VPN backup.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/aws-direct-connect-site-to-site-vpn.html"
+    },
+    {
+      "id": "net-008",
+      "question": "A company is designing a multi-VPC architecture and needs to prevent VPC-to-VPC communication through their Direct Connect gateway while still allowing on-premises to VPC communication. What is the most effective approach to achieve this network segmentation?",
+      "options": [
+        "Use separate Direct Connect gateways for each VPC",
+        "Configure security groups to block inter-VPC traffic",
+        "Implement network ACLs to prevent cross-VPC communication",
+        "Use AWS PrivateLink for all VPC-to-VPC communication"
+      ],
+      "correctIndex": 0,
+      "explanation": "According to AWS documentation, to prevent VPC-to-VPC communication within a Direct Connect gateway, one recommended approach is to provision a single Direct Connect Gateway for each VPC that you want to connect to your on-premises network instead of using the same Direct Connect Gateway for multiple VPCs. This provides complete network isolation between VPCs.",
+      "reference": "https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html"
+    },
+    {
+      "id": "net-009",
+      "question": "A solutions architect is designing a network architecture where instances in private subnets need to access Amazon S3. The route table for the private subnet has a route to a NAT gateway for internet access. When a gateway endpoint for S3 is created and associated with the route table, how will traffic to S3 be routed?",
+      "options": [
+        "Traffic will continue to use the NAT gateway due to route precedence",
+        "Traffic will be load balanced between the NAT gateway and gateway endpoint",
+        "The gateway endpoint route will take precedence using longest prefix match",
+        "Traffic routing will fail due to conflicting routes"
+      ],
+      "correctIndex": 2,
+      "explanation": "AWS uses the most specific route that matches the traffic to determine how to route the traffic (longest prefix match). For route tables with an endpoint route, if there is a route that sends all internet traffic (0.0.0.0/0) to an internet gateway or NAT gateway, the endpoint route takes precedence for traffic destined for the service (Amazon S3) in the current Region.",
+      "reference": "https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html"
+    },
+    {
+      "id": "net-010",
+      "question": "A global company needs to deploy applications across multiple AWS regions to serve users worldwide. They want to minimize latency by placing resources closer to end users. Which AWS infrastructure components should they primarily consider when selecting regions and availability zones for optimal network performance?",
+      "options": [
+        "AWS Edge Locations and Regional Edge Caches",
+        "Local Zones and Wavelength Zones for ultra-low latency",
+        "AWS Regions based on geographic proximity to users",
+        "Availability Zones with the highest compute capacity"
+      ],
+      "correctIndex": 2,
+      "explanation": "AWS Regions are geographically distributed worldwide, and selecting regions based on geographic proximity to end users is the primary consideration for minimizing network latency. AWS services are hosted in multiple locations worldwide composed of AWS Regions, and choosing the region closest to your users provides the best network performance.",
+      "reference": "https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions-availability-zones.html"
+    }
+  ]
+}
