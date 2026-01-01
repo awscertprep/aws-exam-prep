@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const series = [
+  {
+    title: "Cloud Architect Interview Prep",
+    href: "/interview-prep/aws/cloud-architect",
+    summary: "A living Q&A series organized by architecture domains and trade-offs.",
+    sections: "Networking, Security, Resilience, Cost",
+  },
+];
+---
+
+<BaseLayout
+  title="Interview Prep | AWS Exam Prep"
+  description="Structured interview prep series organized by architecture domains."
+>
+
+  <section class="grid">
+    {series.map((item) => (
+      <a class="card track" href={item.href}>
+        <div class="card-top">
+          <span class="pill">Series</span>
+          <span class="badge">Q&A hub</span>
+        </div>
+        <h2>{item.title}</h2>
+        <p class="muted">{item.summary}</p>
+        <div class="go">Open hub →</div>
+      </a>
+    ))}
+  </section>
+
+  <style>
+    .card.track,
+    .card.track:visited {
+      color: var(--text);
+    }
+    .card.track .go {
+      color: var(--accent);
+    }
+  </style>
+</BaseLayout>

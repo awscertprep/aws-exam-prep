@@ -1,0 +1,187 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="AWS Well-Architected Framework — Interview Version | AWS Exam Prep"
+  description="A 10-minute interview-ready guide to the AWS Well-Architected Framework."
+>
+  <section class="surface hero">
+    <div class="eyebrow">Blog</div>
+    <h1>AWS Well-Architected Framework — 10-Minute Interview Version</h1>
+    <p class="lede">
+      A fast, interview-ready walkthrough that focuses on pillars, trade-offs, and how teams apply the
+      framework in practice.
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>1. What it is (30-45 seconds)</h2>
+    <p>
+      "The AWS Well-Architected Framework is a decision-making framework used to design, review, and
+      continuously improve cloud workloads. It’s not an audit or checklist — it’s a structured way to
+      identify architectural risks and make informed trade-offs across six pillars."
+    </p>
+    <p class="muted">Key phrases interviewers expect: workload-level, trade-offs, continuous improvement, not an audit.</p>
+  </section>
+
+  <section class="surface">
+    <h2>2. Why it exists (30 seconds)</h2>
+    <p>
+      "Cloud removes many traditional constraints, but it introduces new failure modes: misconfiguration,
+      scaling issues, security gaps, and cost waste. The framework captures AWS’s experience running
+      internet-scale systems and helps teams avoid repeating common mistakes."
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>3. The six pillars (2 minutes total)</h2>
+
+    <h3>Operational Excellence</h3>
+    <p>Question it answers: Can we run and improve this system safely over time?</p>
+    <ul>
+      <li>Observability (metrics, logs, traces tied to business KPIs)</li>
+      <li>Automation (infra and ops as code)</li>
+      <li>Small, reversible changes</li>
+      <li>Post-incident learning</li>
+    </ul>
+    <p class="muted">Typical services: CloudWatch, X-Ray, CloudTrail, Systems Manager, CloudFormation</p>
+
+    <h3>Security</h3>
+    <p>Question: Is everything protected by design, not by trust?</p>
+    <ul>
+      <li>Least privilege</li>
+      <li>No long-term credentials</li>
+      <li>Defense in depth</li>
+      <li>Encrypt everywhere</li>
+      <li>Prepare for incidents</li>
+    </ul>
+    <p class="muted">Non-negotiable points: Humans -> IAM Identity Center + MFA; machines -> IAM roles + temporary credentials</p>
+
+    <h3>Reliability</h3>
+    <p>Question: Will it work when needed — and recover when it fails?</p>
+    <ul>
+      <li>Failure is expected</li>
+      <li>Multi-AZ by default</li>
+      <li>Automated recovery</li>
+      <li>Decoupling</li>
+      <li>Backups + DR aligned to RTO/RPO</li>
+    </ul>
+    <p class="muted">Typical services: ALB, Auto Scaling, RDS Multi-AZ, DynamoDB, Route 53</p>
+
+    <h3>Performance Efficiency</h3>
+    <p>Question: Are we using the right resources efficiently?</p>
+    <ul>
+      <li>Choose the right compute model</li>
+      <li>Prefer managed services</li>
+      <li>Cache aggressively</li>
+      <li>Re-evaluate continuously as demand and tech change</li>
+    </ul>
+    <p class="muted">Typical services: Lambda, ECS/EKS, CloudFront, ElastiCache, Compute Optimizer</p>
+
+    <h3>Cost Optimization</h3>
+    <p>Question: Are we paying only for business value?</p>
+    <ul>
+      <li>Measure unit cost</li>
+      <li>Eliminate idle resources</li>
+      <li>Use the right pricing model</li>
+      <li>Cost is a design constraint</li>
+    </ul>
+    <p class="muted">Typical services: Cost Explorer, Budgets, Savings Plans, Trusted Advisor</p>
+
+    <h3>Sustainability</h3>
+    <p>Question: Are we minimizing environmental impact?</p>
+    <ul>
+      <li>Right-size resources</li>
+      <li>Align supply with demand</li>
+      <li>Reduce data movement</li>
+      <li>Prefer managed and serverless services</li>
+    </ul>
+    <p class="muted">Important insight: This pillar strongly overlaps with cost optimization.</p>
+  </section>
+
+  <section class="surface">
+    <h2>4. Trade-offs (1 minute)</h2>
+    <p>
+      "Trade-offs are expected. You might optimize cost in dev and test and reliability in production.
+      However, security and operational excellence are generally not trade-offs — weakening them
+      increases systemic risk."
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>5. Cloud-native design principles (1 minute)</h2>
+    <ul>
+      <li>Stop guessing capacity -> elastic scaling</li>
+      <li>Test at production scale -> temporary environments</li>
+      <li>Automate everything -> infra and ops as code</li>
+      <li>Design for evolution -> expect change</li>
+      <li>Use data -> metrics over opinions</li>
+      <li>Practice failure -> game days</li>
+    </ul>
+  </section>
+
+  <section class="surface">
+    <h2>6. The review process (45 seconds)</h2>
+    <p>
+      "The framework is applied through Well-Architected Reviews using the AWS Well-Architected Tool.
+      Reviews happen throughout the lifecycle, not just before go-live. Risks are identified,
+      prioritized, and remediated over time."
+    </p>
+    <p class="muted">Key phrase: continuous review, not one-time certification.</p>
+  </section>
+
+  <section class="surface">
+    <h2>7. How architects actually use it (1 minute)</h2>
+    <p>
+      "In real teams, the framework provides a common language for architects, security, operations,
+      and leadership. It helps justify design decisions, explain trade-offs, and prioritize improvements
+      using data instead of opinion."
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>8. One-sentence closing</h2>
+    <p>
+      "The AWS Well-Architected Framework helps architects design systems that are secure, reliable,
+      efficient, cost-effective, and sustainable — and, most importantly, able to evolve safely over
+      time."
+    </p>
+  </section>
+
+  <section class="surface">
+    <h2>How to use this in interviews</h2>
+    <ul>
+      <li>Answer in pillars, not services.</li>
+      <li>Explain why, not just what.</li>
+      <li>Always mention trade-offs.</li>
+      <li>Tie technical choices to business outcomes.</li>
+    </ul>
+  </section>
+
+  <section class="surface related">
+    <p class="eyebrow">Related decks</p>
+    <div class="related-links">
+      <a href="/interview-prep/aws/cloud-architect">Cloud Architect interview prep</a>
+      <a href="/aws/sap-c02/architect-network-connectivity-strategies">Architect network connectivity strategies</a>
+      <a href="/aws/sap-c02/flashcards">Flashcards (Quick Recap)</a>
+    </div>
+  </section>
+
+  <style>
+    .related-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .related-links a {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

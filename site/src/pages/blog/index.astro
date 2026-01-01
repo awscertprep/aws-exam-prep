@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = [
+  {
+    title: "AWS Well-Architected Framework — 10-Minute Interview Version",
+    href: "/blog/well-architected",
+    summary: "A fast, interview-ready walkthrough focused on pillars, trade-offs, and how teams apply the framework.",
+    readTime: "10 min read",
+  },
+];
+---
+
+<BaseLayout
+  title="Blog | AWS Exam Prep"
+  description="Short, focused notes on AWS architecture topics."
+>
+  <section class="surface hero">
+    <div class="eyebrow">Blog</div>
+  </section>
+
+  <section class="grid">
+    {posts.map((post) => (
+      <a class="card blog" href={post.href}>
+        <div class="card-top">
+          <span class="pill">Blog</span>
+          <span class="badge">{post.readTime}</span>
+        </div>
+        <h2>{post.title}</h2>
+        <p class="muted">{post.summary}</p>
+        <div class="go">Read article →</div>
+      </a>
+    ))}
+  </section>
+
+  <style>
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 16px;
+    }
+    .card.blog {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 18px;
+      padding: 18px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      transition: transform 0.12s ease, border 0.2s ease;
+    }
+    .card.blog:visited {
+      color: var(--text);
+    }
+    .card.blog:hover {
+      transform: translateY(-2px);
+      border-color: rgba(109, 236, 185, 0.4);
+    }
+    .card.blog .muted {
+      color: var(--muted);
+    }
+    .card.blog .go {
+      color: var(--accent);
+      font-weight: 700;
+    }
+  </style>
+</BaseLayout>

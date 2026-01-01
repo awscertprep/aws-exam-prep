@@ -1,5 +1,136 @@
 {
   "exam": "SAP-C02",
   "topic": "Design a multi-account AWS environment",
-  "questions": []
+  "questions": [
+    {
+      "id": "org-001",
+      "question": "A company wants to centrally manage multiple AWS accounts with mandatory security guardrails, automated account provisioning, and centralized logging. Product teams should not be able to remove these controls. Which AWS service combination best satisfies this requirement?",
+      "options": [
+        "AWS Organizations with SCPs applied manually to each account",
+        "AWS Control Tower with preventive and detective guardrails enabled",
+        "AWS Organizations with IAM permission boundaries in each account",
+        "AWS Config rules deployed independently in every account"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Control Tower builds and manages a landing zone using AWS Organizations, automatically sets up log archive and audit accounts, and applies preventive and detective guardrails that cannot be modified by member accounts. The other options require manual enforcement or do not provide a complete landing zone and governance model.",
+      "reference": "https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html"
+    },
+    {
+      "id": "org-002",
+      "question": "An enterprise wants to ensure that no AWS account in its organization can disable CloudTrail or stop centralized logging. Which governance mechanism should be used to enforce this requirement across all accounts?",
+      "options": [
+        "IAM permission boundaries applied to administrator roles",
+        "AWS Config rules with automatic remediation",
+        "Service control policies (SCPs) in AWS Organizations",
+        "AWS CloudTrail event selectors with organization trails"
+      ],
+      "correctIndex": 2,
+      "explanation": "Service control policies define the maximum available permissions for accounts in an AWS Organization and can explicitly deny actions such as disabling CloudTrail. IAM and Config operate within accounts and cannot override organizational restrictions.",
+      "reference": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
+    },
+    {
+      "id": "org-003",
+      "question": "A security team needs a centralized account to receive CloudTrail logs from all member accounts in an AWS Organization. The logs must include management events for all regions. Which approach meets this requirement with the least operational overhead?",
+      "options": [
+        "Create individual CloudTrail trails in each account and send logs to a shared S3 bucket",
+        "Use AWS Control Tower to enable an organization trail that delivers logs to the log archive account",
+        "Enable CloudTrail Insights in each account separately",
+        "Configure EventBridge rules in each account to forward events to the security account"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Control Tower sets up an AWS CloudTrail organization trail that automatically logs events for all member accounts and delivers them to the centralized log archive account. This minimizes manual setup and ensures consistent coverage.",
+      "reference": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html"
+    },
+    {
+      "id": "org-004",
+      "question": "A company wants to share a centralized Amazon VPC Transit Gateway with multiple application accounts while retaining ownership and control in a networking account. Which AWS service enables this capability?",
+      "options": [
+        "AWS Organizations SCPs",
+        "AWS Resource Access Manager (RAM)",
+        "VPC peering connections",
+        "AWS Control Tower account factory"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Resource Access Manager allows sharing supported resources, including Transit Gateways, across AWS accounts within an organization or with external accounts. VPC peering does not scale for this use case, and SCPs or Account Factory do not provide resource sharing.",
+      "reference": "https://docs.aws.amazon.com/ram/latest/userguide/what-is.html"
+    },
+    {
+      "id": "org-005",
+      "question": "An organization wants to receive near real-time notifications when specific API actions occur across any account in the organization, such as changes to IAM or network resources. Which architecture best supports this requirement?",
+      "options": [
+        "Centralized CloudWatch Logs subscription filters",
+        "Organization-level CloudTrail integrated with Amazon EventBridge in a central account",
+        "AWS Config aggregators with compliance change notifications",
+        "AWS Security Hub findings forwarded to SNS"
+      ],
+      "correctIndex": 1,
+      "explanation": "CloudTrail records API activity across all accounts, and EventBridge can consume these events centrally to trigger near real-time notifications. Config and Security Hub are compliance-focused and not designed for immediate API event detection.",
+      "reference": "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-eventbridge.html"
+    },
+    {
+      "id": "org-006",
+      "question": "A company is designing an AWS Organization with strict separation between production and non-production workloads. They want to apply different security controls and policies to each environment. Which design best supports this requirement?",
+      "options": [
+        "Single OU with tags identifying environment type",
+        "Separate OUs for production and non-production accounts",
+        "Single account with multiple VPCs per environment",
+        "Separate IAM roles for production and non-production access"
+      ],
+      "correctIndex": 1,
+      "explanation": "Organizational units allow applying different SCPs and governance controls to groups of accounts. Separating production and non-production into different OUs enables environment-specific restrictions that cannot be enforced reliably with tags, IAM roles, or VPC separation alone.",
+      "reference": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_ous.html"
+    },
+    {
+      "id": "org-007",
+      "question": "A governance team wants to ensure that all newly created AWS accounts automatically include baseline security services, such as centralized logging and mandatory guardrails. Which AWS feature provides this capability?",
+      "options": [
+        "AWS Organizations account invitations",
+        "AWS Control Tower Account Factory",
+        "AWS Service Catalog portfolios",
+        "IAM permission boundary templates"
+      ],
+      "correctIndex": 1,
+      "explanation": "Account Factory in AWS Control Tower provisions new accounts with predefined configurations, including logging, guardrails, and baseline security settings. The other options do not provide automated account-level governance setup.",
+      "reference": "https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html"
+    },
+    {
+      "id": "org-008",
+      "question": "An enterprise wants a single account to aggregate AWS Config data from all member accounts for compliance reporting. Which AWS feature supports this centralized visibility?",
+      "options": [
+        "AWS Config conformance packs deployed individually",
+        "AWS Config organization rules",
+        "AWS Config aggregators in a delegated administrator account",
+        "AWS Security Hub cross-account findings"
+      ],
+      "correctIndex": 2,
+      "explanation": "AWS Config aggregators allow a central account to collect configuration and compliance data from multiple accounts and regions. This provides organization-wide visibility without deploying reporting logic separately in each account.",
+      "reference": "https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html"
+    },
+    {
+      "id": "org-009",
+      "question": "A company wants to restrict member accounts from creating resources in unsupported AWS regions while allowing global services to function normally. Which control is most appropriate?",
+      "options": [
+        "IAM policies attached to user roles",
+        "AWS Config rules checking region usage",
+        "Service control policies denying actions outside approved regions",
+        "AWS Control Tower detective guardrails only"
+      ],
+      "correctIndex": 2,
+      "explanation": "Service control policies can deny API actions based on requested regions, effectively preventing resource creation in unauthorized regions across all member accounts. IAM and Config cannot enforce organization-wide hard restrictions.",
+      "reference": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_examples.html"
+    },
+    {
+      "id": "org-010",
+      "question": "An organization wants to delegate administration of AWS Security Hub to a central security account while allowing findings from all member accounts to be aggregated automatically. Which approach is supported by AWS?",
+      "options": [
+        "Manually enabling Security Hub in each account and sharing findings via SNS",
+        "Using AWS Organizations delegated administrator for Security Hub",
+        "Creating cross-account IAM roles for Security Hub access",
+        "Deploying Security Hub only in the management account"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Organizations supports delegated administrator accounts for services like Security Hub, enabling centralized management and automatic aggregation of findings across member accounts without manual configuration.",
+      "reference": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts.html"
+    }
+  ]
 }

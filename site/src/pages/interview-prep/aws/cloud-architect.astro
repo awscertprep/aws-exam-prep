@@ -1,0 +1,223 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const questions = [
+  {
+    q: "How would you design a multi-account AWS architecture for multiple teams and environments?",
+    focus: "Blast radius, governance, independence, auditability.",
+    a: [
+      "Use AWS Organizations with a multi-account strategy:",
+      "Management account for org-level administration.",
+      "Security OU with Log Archive and Audit/Security tooling accounts.",
+      "Shared services/networking account.",
+      "One account per team per environment (for example, Team A Prod and Team A Non-Prod).",
+      "This limits blast radius, enables independent deployments, allows env-specific guardrails, and simplifies cost allocation.",
+      "Key point: accounts are the strongest isolation boundary in AWS.",
+    ],
+  },
+  {
+    q: "Why choose one account per team per environment instead of fewer accounts?",
+    focus: "Trade-offs, not just best practice.",
+    a: [
+      "Clear ownership and accountability.",
+      "Strong security isolation between teams and environments.",
+      "Cleaner IAM policies with less conditional logic.",
+      "Easier cost tracking and chargeback.",
+      "Downside: higher operational overhead (more accounts, quotas, networking, IAM assignments).",
+      "This works best with automation (Control Tower, IaC, standardized patterns).",
+    ],
+  },
+  {
+    q: "How would you design networking connectivity across many AWS accounts?",
+    focus: "Scale, segmentation, manageability.",
+    a: [
+      "Use a hub-and-spoke model with AWS Transit Gateway (TGW).",
+      "Deploy TGW in a central networking account and share via AWS RAM.",
+      "Attach each workload VPC to TGW.",
+      "Use multiple TGW route tables for segmentation (Prod, Non-Prod, Shared services).",
+      "Enforce segmentation with route table association and route propagation.",
+    ],
+  },
+  {
+    q: "How do you prevent non-prod workloads from accessing prod workloads?",
+    focus: "Design-level isolation, not just security groups.",
+    a: [
+      "Use TGW routing segmentation:",
+      "Prod attachments associate to a Prod TGW route table.",
+      "Non-Prod attachments associate to a Non-Prod TGW route table.",
+      "No propagation between Prod and Non-Prod route tables means no network path exists.",
+      "Security groups become defense-in-depth, not the primary control.",
+    ],
+  },
+  {
+    q: "How do you design centralized internet egress with inspection?",
+    focus: "Routing, enforcement, resilience.",
+    a: [
+      "Create a centralized inspection/egress VPC in the networking account.",
+      "Deploy AWS Network Firewall in dedicated firewall subnets (one per AZ).",
+      "Use NAT Gateways per AZ.",
+      "Route: workload subnet -> TGW -> inspection VPC -> Network Firewall -> NAT -> IGW.",
+      "Workload subnets default route 0.0.0.0/0 to TGW; TGW routes 0.0.0.0/0 to inspection VPC.",
+      "Inspection VPC routes steer traffic through firewall endpoints.",
+    ],
+  },
+  {
+    q: "Can routing alone enforce that traffic always goes through inspection?",
+    focus: "Governance + architecture.",
+    a: [
+      "No. Routing defines paths, not what paths can exist.",
+      "Without governance, a user could create an IGW and routes to bypass inspection.",
+      "Enforce with SCPs that deny IGW, NAT, and route creation in Prod accounts.",
+      "Use permission boundaries and detect via CloudTrail and AWS Config.",
+      "Key insight: architecture and governance must work together.",
+    ],
+  },
+  {
+    q: "What happens if an Availability Zone fails in the inspection VPC?",
+    focus: "AZ-scoped components and failure behavior.",
+    a: [
+      "Network Firewall endpoints and NAT Gateways are AZ-specific.",
+      "TGW attachments span multiple AZs.",
+      "If one AZ fails, existing stateful flows in that AZ may drop; new connections use surviving AZ paths.",
+      "Traffic continues if firewall endpoints and NAT Gateways exist in multiple AZs and routing is AZ-aware.",
+      "Common outage cause: single NAT or firewall endpoint for all AZs.",
+    ],
+  },
+  {
+    q: "How do you provide private access to AWS services without using the internet?",
+    focus: "Endpoints, cost, DNS.",
+    a: [
+      "Use VPC endpoints:",
+      "Gateway endpoints for S3 and DynamoDB.",
+      "Interface endpoints (PrivateLink) for services like STS, ECR, CloudWatch, KMS, and SSM.",
+      "Gateway endpoints are preferred for S3/DynamoDB because they are free, route-table based, and scalable.",
+    ],
+  },
+  {
+    q: "Why does S3 support both gateway and interface endpoints?",
+    focus: "Design intent, not features.",
+    a: [
+      "Gateway endpoints are optimized for VPC-based workloads accessing S3.",
+      "Interface endpoints exist for PrivateLink-based designs and hybrid/on-prem access.",
+      "Interface endpoints offer security group control; gateway endpoints are usually simpler for VPC workloads.",
+    ],
+  },
+  {
+    q: "How do you restrict access to centralized interface endpoints?",
+    focus: "Network + policy + evidence.",
+    a: [
+      "Use security groups on endpoint ENIs to restrict source CIDRs.",
+      "Use endpoint policies to restrict allowed accounts and actions.",
+      "Audit with CloudTrail (VPC endpoint IDs) and VPC Flow Logs on endpoint ENIs.",
+    ],
+  },
+  {
+    q: "How do you restrict EC2 access to only one S3 bucket even if someone attaches AmazonS3FullAccess?",
+    focus: "IAM layering.",
+    a: [
+      "Use a gateway endpoint policy to restrict S3 resources accessible via the endpoint.",
+      "Use an S3 bucket policy to allow access only from specific roles or a specific VPC endpoint ID.",
+      "Resource-based policies enforce the final boundary even if identity permissions are broad.",
+    ],
+  },
+  {
+    q: "Do you need bucket policies on every bucket?",
+    focus: "Balanced security posture.",
+    a: [
+      "Not necessarily. Apply bucket policies to sensitive or shared data buckets.",
+      "Use permission boundaries and SCPs to constrain principals.",
+      "Automate standards for new buckets to keep consistency without overhead.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Cloud Architect Interview Prep | AWS Exam Prep"
+  description="A structured Q&A hub for cloud architecture interview preparation."
+>
+  <section class="surface hero">
+    <div class="eyebrow">Interview Prep</div>
+    <h1>Cloud Architect Interview Prep</h1>
+    <p class="lede">
+    </p>
+  </section>
+
+
+  <section class="surface">
+    <h2>General Prep Q&A</h2>
+    <div class="qa-list">
+      {questions.map((item, index) => (
+        <details class="qa">
+          <summary>
+            <span class="pill">Q{index + 1}</span>
+            <span>{item.q}</span>
+          </summary>
+          <div class="qa-body">
+            <p class="muted"><strong>Expected focus:</strong> {item.focus}</p>
+            <ul>
+              {item.a.map((line) => (
+                <li>{line}</li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="surface related">
+    <p class="eyebrow">Related decks</p>
+    <div class="related-links">
+      <a href="/aws/sap-c02/design-multi-account-aws-environment">Design a multi-account AWS environment</a>
+      <a href="/aws/sap-c02/prescribe-security-controls">Prescribe security controls</a>
+      <a href="/aws/sap-c02/architect-network-connectivity-strategies">Architect network connectivity strategies</a>
+    </div>
+  </section>
+
+  <style>
+    .qa-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .qa {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 10px 14px;
+    }
+    .qa summary {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      list-style: none;
+    }
+    .qa summary::-webkit-details-marker {
+      display: none;
+    }
+    .qa-body {
+      margin-top: 10px;
+    }
+    .qa-body ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+    .related-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .related-links a {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--accent);
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

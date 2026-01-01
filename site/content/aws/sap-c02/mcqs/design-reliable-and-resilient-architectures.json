@@ -1,5 +1,136 @@
 {
   "exam": "SAP-C02",
   "topic": "Design reliable and resilient architectures",
-  "questions": []
+  "questions": [
+    {
+      "id": "res-001",
+      "question": "A business-critical application requires an RTO of minutes and an RPO of seconds due to strict regulatory and financial impact constraints. The application must remain available even if an entire AWS Region becomes unavailable. Which disaster recovery architecture best meets these requirements according to AWS documentation?",
+      "options": [
+        "A backup-and-restore strategy using Amazon S3 cross-Region replication and manual infrastructure provisioning during a disaster event",
+        "A pilot light architecture where core services are pre-provisioned in the secondary Region but scaled only after a disaster occurs",
+        "A warm standby architecture with scaled-down but fully functional services running continuously in a secondary Region",
+        "A multi-site active-active architecture with traffic routed to multiple Regions using DNS or traffic management services"
+      ],
+      "correctIndex": 3,
+      "explanation": "A multi-site active-active architecture provides the lowest RTO and RPO because applications run concurrently in multiple Regions and can immediately serve traffic if one Region fails. Backup-and-restore, pilot light, and warm standby strategies involve some level of infrastructure startup or scaling during recovery, which increases RTO and potentially RPO. AWS documentation explicitly maps multi-site active-active to near-zero RTO and RPO requirements.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-strategies.html"
+    },
+    {
+      "id": "res-002",
+      "question": "A company wants to minimize disaster recovery costs while still meeting an RTO of several hours and an RPO of less than one hour. Which disaster recovery strategy does AWS documentation recommend for this balance?",
+      "options": [
+        "Backup and restore, relying solely on periodic snapshots and manual redeployment",
+        "Pilot light, where critical components such as databases are replicated and core infrastructure is preconfigured",
+        "Warm standby, running a fully scaled but idle copy of the production environment",
+        "Multi-site active-active, continuously running identical workloads in multiple Regions"
+      ],
+      "correctIndex": 1,
+      "explanation": "The pilot light strategy maintains only critical components running in the secondary Region and allows rapid scale-up during a disaster. AWS documentation positions pilot light as a cost-effective option that improves RTO and RPO compared to backup and restore, without the higher costs of warm standby or multi-site architectures.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/pilot-light.html"
+    },
+    {
+      "id": "res-003",
+      "question": "An application must automatically recover from instance and Availability Zone failures without manual intervention. Which AWS design approach best supports this requirement?",
+      "options": [
+        "Deploying Amazon EC2 instances in a single Availability Zone with scheduled backups",
+        "Using Auto Scaling groups spanning multiple Availability Zones behind an Elastic Load Balancer",
+        "Manually launching replacement instances from Amazon Machine Images during failures",
+        "Relying on Amazon S3 versioning to restore application state after failures"
+      ],
+      "correctIndex": 1,
+      "explanation": "Auto Scaling groups distributed across multiple Availability Zones, combined with Elastic Load Balancing, enable automatic detection and replacement of unhealthy instances. AWS documentation highlights this as a core pattern for high availability and automatic recovery. The other options either rely on manual intervention or do not address compute availability.",
+      "reference": "https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-benefits.html"
+    },
+    {
+      "id": "res-004",
+      "question": "A workload requires frequent backups of multiple AWS services with centralized management, policy-based scheduling, and point-in-time recovery. Which AWS service best supports this requirement?",
+      "options": [
+        "Amazon S3 lifecycle policies applied individually to each bucket",
+        "AWS Backup with backup plans and resource assignments",
+        "Manual snapshots created using AWS CLI scripts",
+        "Amazon CloudWatch Logs for storing recovery data"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Backup provides a centralized service to manage backups across AWS services using backup plans, schedules, and retention policies. AWS documentation emphasizes policy-based backup management and point-in-time recovery capabilities. Manual snapshots and lifecycle policies lack centralized governance and automation at scale.",
+      "reference": "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html"
+    },
+    {
+      "id": "res-005",
+      "question": "A company wants to protect its on-premises and cloud-based servers with continuous replication to AWS, enabling fast recovery to AWS during a disaster. Which AWS service is specifically designed for this use case?",
+      "options": [
+        "AWS Database Migration Service",
+        "AWS Elastic Disaster Recovery",
+        "Amazon EC2 Auto Scaling",
+        "AWS Backup"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS Elastic Disaster Recovery continuously replicates server data to AWS and enables rapid recovery with low RPO and RTO. AWS documentation positions this service as the primary solution for disaster recovery of physical, virtual, and cloud-based servers. The other services address migration, scaling, or backups rather than continuous replication.",
+      "reference": "https://docs.aws.amazon.com/drs/latest/userguide/what-is-drs.html"
+    },
+    {
+      "id": "res-006",
+      "question": "An architect is designing a disaster recovery solution where the secondary environment runs at reduced capacity and can be quickly scaled to full production levels. According to AWS documentation, which strategy does this describe?",
+      "options": [
+        "Backup and restore",
+        "Pilot light",
+        "Warm standby",
+        "Multi-site active-active"
+      ],
+      "correctIndex": 2,
+      "explanation": "Warm standby involves running a scaled-down but fully functional version of the production environment in a secondary Region. AWS documentation states that this allows faster recovery than pilot light because more components are already running, while still being less expensive than multi-site active-active.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/warm-standby.html"
+    },
+    {
+      "id": "res-007",
+      "question": "A workload experiences unpredictable traffic spikes and must remain available during failures by adding or removing capacity automatically. Which architectural approach aligns with AWS scalability guidance?",
+      "options": [
+        "Vertical scaling by manually increasing instance sizes during peak demand",
+        "Horizontal scaling using Auto Scaling groups to add or remove instances automatically",
+        "Deploying larger instances in advance to handle maximum possible load",
+        "Using manual failover scripts to start additional instances"
+      ],
+      "correctIndex": 1,
+      "explanation": "AWS documentation emphasizes horizontal scaling with Auto Scaling as the preferred method for handling variable demand and improving resilience. Vertical scaling and manual approaches do not provide the same level of automatic recovery or elasticity.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/scalability.html"
+    },
+    {
+      "id": "res-008",
+      "question": "A company must ensure that critical data can be restored to a specific point in time after accidental deletion or corruption. Which AWS feature directly supports this requirement?",
+      "options": [
+        "Amazon S3 lifecycle rules for object expiration",
+        "Point-in-time recovery for supported AWS services",
+        "CloudTrail log retention policies",
+        "Auto Scaling group health checks"
+      ],
+      "correctIndex": 1,
+      "explanation": "Point-in-time recovery allows restoration of data to a specific moment before a failure or deletion event. AWS documentation describes this capability for services such as Amazon RDS and AWS Backup. The other options do not provide precise recovery to a specific point in time.",
+      "reference": "https://docs.aws.amazon.com/aws-backup/latest/devguide/point-in-time-recovery.html"
+    },
+    {
+      "id": "res-009",
+      "question": "An architect wants to design a disaster recovery solution that prioritizes the lowest cost and accepts the longest recovery time. Which AWS disaster recovery strategy aligns with this requirement?",
+      "options": [
+        "Multi-site active-active",
+        "Warm standby",
+        "Pilot light",
+        "Backup and restore"
+      ],
+      "correctIndex": 3,
+      "explanation": "Backup and restore is the lowest-cost disaster recovery strategy because no standby infrastructure is running. AWS documentation notes that this approach has the highest RTO and RPO, making it suitable only when longer recovery times are acceptable.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/backup-and-restore.html"
+    },
+    {
+      "id": "res-010",
+      "question": "A global application must continue operating during a Regional outage and distribute traffic across multiple Regions under normal conditions. Which AWS-supported architecture best achieves this?",
+      "options": [
+        "Single-Region deployment with cross-Region backups",
+        "Pilot light architecture with DNS failover",
+        "Warm standby with manual traffic switching",
+        "Multi-site active-active architecture using traffic routing services"
+      ],
+      "correctIndex": 3,
+      "explanation": "A multi-site active-active architecture runs workloads in multiple Regions simultaneously and uses traffic routing to distribute and fail over traffic automatically. AWS documentation highlights this approach as the most resilient option for Regional failures, providing minimal disruption and very low RTO and RPO.",
+      "reference": "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/multi-site-active-active.html"
+    }
+  ]
 }

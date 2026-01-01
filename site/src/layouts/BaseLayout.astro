@@ -35,6 +35,8 @@ const exams = [
 
 const navLinks = [
   { label: 'Services', href: '/services' },
+  { label: 'Interview Prep', href: '/interview-prep' },
+  { label: 'Blog', href: '/blog' },
 ];
 
 ---
@@ -75,12 +77,15 @@ const navLinks = [
         color: var(--text);
         min-height: 100vh;
       }
-      a {
-        color: inherit;
+      a,
+      a:visited,
+      a:active {
+        color: var(--accent);
         text-decoration: none;
       }
-      a:visited {
-        color: inherit;
+      a:hover,
+      a:focus-visible {
+        color: var(--accent-2);
       }
       .bg-grid {
         position: fixed;
@@ -208,7 +213,7 @@ const navLinks = [
       .exam-trigger {
         border: 1px solid var(--border);
         background: rgba(255, 255, 255, 0.02);
-        color: var(--text);
+        color: var(--accent);
         padding: 10px 14px;
         border-radius: 12px;
         font-weight: 700;

@@ -127,7 +127,7 @@ const recentUpdates = updates.slice(0, 5);
       </p>
     </div>
     <div class="about-card">
-      <div class="about-pill">Open-source</div>
+      <div class="about-pill"><strong>Open-source</strong></div>
       <p class="muted">
         If you find outdated content, please open a PR. The goal is to keep the material sharp and community‑verified.
       </p>
@@ -200,7 +200,7 @@ const recentUpdates = updates.slice(0, 5);
     }
     .ghost {
       background: transparent;
-      color: var(--text);
+      color: var(--accent);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px 16px;
@@ -228,6 +228,10 @@ const recentUpdates = updates.slice(0, 5);
       overflow: hidden;
       box-shadow: var(--shadow);
       transition: transform 0.12s ease, border 0.12s ease;
+    }
+    .card.track,
+    .card.track:visited {
+      color: var(--text);
     }
     .card:hover {
       transform: translateY(-2px);
@@ -279,11 +283,12 @@ const recentUpdates = updates.slice(0, 5);
       gap: 6px;
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid var(--border);
+      border: 1px solid transparent;
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: var(--muted);
+      color: #0a0f14;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
       margin-bottom: 8px;
     }
     .updates {
@@ -294,6 +299,21 @@ const recentUpdates = updates.slice(0, 5);
       flex-direction: column;
       gap: 4px;
       margin-bottom: 6px;
+    }
+    .updates-header .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #0a0f14;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      width: fit-content;
     }
     .updates-list {
       display: grid;
@@ -341,6 +361,10 @@ const recentUpdates = updates.slice(0, 5);
       font-weight: 700;
       letter-spacing: -0.01em;
       margin-bottom: 2px;
+    }
+    .update-title a,
+    .update-title a:visited {
+      color: var(--text);
     }
     .stats {
       display: grid;

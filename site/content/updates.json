@@ -1,9 +1,39 @@
 [
   {
+    "date": "2026-01-01",
+    "title": "Multi-account AWS environment updated - SAP-C02",
+    "description": "Added 10 MCQs covering Control Tower, SCPs, org-wide logging, and governance patterns.",
+    "link": "/aws/sap-c02/design-multi-account-aws-environment"
+  },
+  {
+    "date": "2026-01-01",
+    "title": "Interview prep hub + Q&A added",
+    "description": "Launched the Cloud Architect interview prep hub with 12 expandable questions.",
+    "link": "/interview-prep/aws/cloud-architect"
+  },
+  {
+    "date": "2026-01-01",
+    "title": "Blog section launched",
+    "description": "Published the Well-Architected Framework interview guide.",
+    "link": "/blog/well-architected"
+  },
+  {
+    "date": "2026-01-01",
+    "title": "Reliable and resilient architectures updated - SAP-C02",
+    "description": "Added 10 MCQs covering DR strategies, recovery objectives, and availability patterns.",
+    "link": "/aws/sap-c02/design-reliable-and-resilient-architectures"
+  },
+  {
     "date": "2025-12-27",
     "title": "Services section launched",
     "description": "Added the new Services section with an Amazon EC2 deep-dive page.",
     "link": "/services"
+  },
+  {
+    "date": "2025-12-27",
+    "title": "Prescribe security controls updated - SAP-C02",
+    "description": "Added 10 MCQs covering IAM & IAM Identity Center, organization-wide security governance and encryption/key management.",
+    "link": "/aws/sap-c02/prescribe-security-controls"
   },
   {
     "date": "2025-12-26",
